@@ -48,6 +48,7 @@ export class UsersService {
         ...filterOptions,
         isDeleted: false,
       })
+      .setOptions({ sanitizeFilter: true })
       .limit(limit)
       .skip(offset)
       .sort({ [sortBy]: sort });

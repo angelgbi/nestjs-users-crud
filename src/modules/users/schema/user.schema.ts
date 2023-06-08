@@ -1,5 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  ApiResponseProperty,
+} from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -22,7 +26,7 @@ export class User {
   @Prop({ type: Date, required: true })
   birthDate: Date;
 
-  @ApiResponseProperty()
+  @ApiPropertyOptional()
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
@@ -42,6 +46,9 @@ export class User {
   @Prop({ type: String, required: true })
   firstName: string;
 
+  @ApiPropertyOptional({
+    example: false,
+  })
   @Prop({ type: Boolean, default: false, index: true })
   isDeleted: boolean;
 
@@ -53,22 +60,29 @@ export class User {
   @Prop({ type: String, required: true })
   lastName: string;
 
-  @ApiProperty({ required: false })
+  @ApiPropertyOptional({
+    description: `User information provider`,
+    example: 'Facebook',
+  })
   @Prop({ index: true, type: String })
   marketingSource: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    description: `User's phone`,
+    example: '(000) 000-0000',
+    required: true,
+  })
   @Prop({ type: String, required: true })
   phone: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: `User's status`,
     example: 'DQL',
-    required: false,
   })
   @Prop({ index: true, type: String })
   status: string;
 
+  @ApiPropertyOptional()
   @ApiResponseProperty()
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;

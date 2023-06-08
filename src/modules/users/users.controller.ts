@@ -41,8 +41,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('/')
-  @ApiOperation({ summary: `Create a new user` })
-  @ApiOkResponse({ type: User })
+  @ApiOperation({
+    summary: `Create a new user`,
+    description:
+      'Endpoint for create a new user. Returns the newly created user.',
+  })
+  @ApiOkResponse({ type: User, status: 201 })
   async postUsers(@Body() body: CreateUserDto): Promise<User> {
     const newUser = await this.usersService.createUser(body);
 
@@ -50,7 +54,11 @@ export class UsersController {
   }
 
   @Get('/')
-  @ApiOperation({ summary: `Return a list of users` })
+  @ApiOperation({
+    summary: `Return a list of users`,
+    description:
+      "Endoint for get the list of users. Can filter, sort and paginate results. Doesn't return soft deleted users.",
+  })
   @ApiOkResponsePaginated(User)
   async getUsers(
     @Query() query: QueryUserDto,
@@ -67,7 +75,11 @@ export class UsersController {
   }
 
   @Patch('/:id')
-  @ApiOperation({ summary: `Update a single user` })
+  @ApiOperation({
+    summary: `Update a single user`,
+    description:
+      'Endpoint to update an user. Returns the user with the updated changes.',
+  })
   @ApiParam({ name: 'id', type: String })
   @ApiOkResponse({ type: User })
   async patchUser(
@@ -80,7 +92,11 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: `Soft delete a single user` })
+  @ApiOperation({
+    summary: `Soft delete a single user`,
+    description:
+      'Endpoint to soft delete an user, it just update the isDeleted property to true so user is not indexed on other searchs. Returns the deleted user with the updated property.',
+  })
   @ApiParam({ name: 'id', type: String })
   @ApiOkResponse({ type: User })
   async deleteUser(
@@ -108,6 +124,8 @@ export class UsersController {
       }),
     }),
   )
+  @ApiOperation({ summary: `Bulk insertion of users to db` })
+  @ApiOkResponse({ type: UploadUsersResponseDto })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -115,7 +133,7 @@ export class UsersController {
       properties: {
         file: {
           type: 'string',
-          format: 'binary',
+          format: '.csv',
         },
       },
     },
