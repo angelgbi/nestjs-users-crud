@@ -22,9 +22,11 @@ import {
 } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 import { diskStorage } from 'multer';
+import { ApiOkResponsePaginated } from 'src/decorators/api-ok-response-paginated.decorator';
 import { ParseMongoObjectIdPipe } from 'src/pipes/parse-mongo-object-id.pipe';
 import { CsvParser } from 'src/providers/csv-parser.provider';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PaginatedResponseDto } from './dto/paginated-response.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UploadUsersResponseDto } from './dto/upload-users-response.dto';
@@ -47,9 +49,19 @@ export class UsersController {
 
   @Get('/')
   @ApiOperation({ summary: `Return a list of users` })
-  @ApiOkResponse({ type: [User] })
-  async getUsers(@Query() query: QueryUserDto): Promise<User[]> {
-    return await this.usersService.getModel().find();
+  @ApiOkResponsePaginated(User)
+  async getUsers(
+    @Query() query: QueryUserDto,
+  ): Promise<PaginatedResponseDto<User>> {
+    const users = await this.usersService.getAllUsers(query);
+
+    return new PaginatedResponseDto({
+      data: users,
+      limit: query.limit,
+      page: query.page,
+      sort: query.sort,
+      sortBy: query.sortBy,
+    });
   }
 
   @Patch('/:id')
