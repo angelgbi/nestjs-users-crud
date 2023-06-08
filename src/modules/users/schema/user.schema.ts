@@ -23,7 +23,7 @@ export class User {
   birthDate: Date;
 
   @ApiResponseProperty()
-  @Prop({ type: Date })
+  @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
   @ApiProperty({
@@ -70,7 +70,7 @@ export class User {
   status: string;
 
   @ApiResponseProperty()
-  @Prop({ type: Date })
+  @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
 
   constructor(args?: Partial<User>) {

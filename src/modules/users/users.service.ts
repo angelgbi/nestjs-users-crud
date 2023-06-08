@@ -48,6 +48,7 @@ export class UsersService {
 
   async bulkUserInsertion(users: rawUserForBulk[]): Promise<BulkWriteResult> {
     const userBulk = this.userModel.collection.initializeUnorderedBulkOp();
+    const currentDate = new Date().toISOString();
 
     users.forEach((user) => {
       userBulk.insert({
@@ -59,6 +60,8 @@ export class UsersService {
         birthDate: user.birth_date,
         status: user.status,
         isDeleted: false,
+        createdAt: currentDate,
+        updatedAt: currentDate,
       });
     });
 
