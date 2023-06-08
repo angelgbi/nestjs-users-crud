@@ -15,6 +15,7 @@ export class UsersInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request>();
+    const statusCode = ctx.getResponse().statusCode;
     const requestId = Buffer.from(new Date().toISOString()).toString('base64');
 
     // log request
@@ -27,14 +28,18 @@ export class UsersInterceptor implements NestInterceptor {
       .pipe(
         map(async (value) => {
           // log successful response
-          this.logger.log(`(${requestId}) ${JSON.stringify(value)}`);
+          this.logger.log(
+            `(${requestId}) statusCode: ${statusCode} ${JSON.stringify(value)}`,
+          );
           return value;
         }),
       )
       .pipe(
         catchError(async (err) => {
           // log error
-          this.logger.error(`(${requestId}) ${JSON.stringify(err)}`);
+          this.logger.error(
+            `(${requestId}) statusCode: ${statusCode} ${JSON.stringify(err)}`,
+          );
           return err;
         }),
       );
