@@ -6,6 +6,7 @@ import { IMongoConfig } from 'config/mongo.config';
 import { BulkWriteResult } from 'mongodb';
 import { Model, Types } from 'mongoose';
 import { QueryUserDto } from './dto/query-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { rawUserForBulk } from './interfaces/raw.user.interface';
 import { User } from './schema/user.schema';
 @Injectable()
@@ -34,6 +35,12 @@ export class UsersService {
       .limit(limit)
       .skip(offset)
       .sort({ [sortBy]: sort });
+  }
+
+  async updateUser(id: Types.ObjectId, body: UpdateUserDto) {
+    return this.userModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
   }
 
   async softDeleteUser(id: Types.ObjectId): Promise<User> {
