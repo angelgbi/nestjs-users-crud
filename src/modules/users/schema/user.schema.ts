@@ -17,9 +17,9 @@ export class User {
   @ApiProperty({
     description: `User's birthdate`,
     example: new Date().toISOString(),
-    required: false,
+    required: true,
   })
-  @Prop({ type: Date })
+  @Prop({ type: Date, required: true })
   birthDate: Date;
 
   @ApiResponseProperty()
@@ -29,36 +29,36 @@ export class User {
   @ApiProperty({
     description: `User's email address`,
     example: 'johnsmith@nestjs.com',
-    required: false,
+    required: true,
   })
-  @Prop()
+  @Prop({ unique: true, type: String, required: true })
   email: string;
 
   @ApiProperty({
     description: `User's first name`,
     example: 'John',
-    required: false,
+    required: true,
   })
-  @Prop()
+  @Prop({ type: String, required: true })
   firstName: string;
 
-  @Prop({ type: Boolean, default: null })
+  @Prop({ type: Boolean, default: false, index: true })
   isDeleted: boolean;
 
   @ApiProperty({
     description: `User's last name`,
     example: 'Smith',
-    required: false,
+    required: true,
   })
-  @Prop()
+  @Prop({ type: String, required: true })
   lastName: string;
 
   @ApiProperty({ required: false })
-  @Prop()
+  @Prop({ index: true, type: String })
   marketingSource: string;
 
   @ApiProperty({ required: false })
-  @Prop({ required: true, index: true })
+  @Prop({ type: String, required: true })
   phone: string;
 
   @ApiProperty({
@@ -66,7 +66,7 @@ export class User {
     example: 'DQL',
     required: false,
   })
-  @Prop()
+  @Prop({ index: true, type: String })
   status: string;
 
   @ApiResponseProperty()

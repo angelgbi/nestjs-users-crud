@@ -113,15 +113,19 @@ export class UsersController {
     }
 
     const users = await CsvParser.parse(file.path);
+    let bulkResults = null;
 
-    /**
-     * @todo
-     * Insert users into database
-     */
+    try {
+      bulkResults = await this.usersService.bulkUserInsertion(users);
+    } catch (error) {
+      bulkResults = error.result;
+    }
 
     return new UploadUsersResponseDto({
-      failedCount: 0,
-      successCount: 0,
+      failedCount: bulkResults.writeErrors
+        ? bulkResults.writeErrors.length
+        : users.length - bulkResults.insertedCount,
+      successCount: bulkResults.insertedCount,
     });
   }
 }
