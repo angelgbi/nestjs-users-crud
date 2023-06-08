@@ -44,7 +44,9 @@ export class UsersController {
   @ApiOperation({ summary: `Create a new user` })
   @ApiOkResponse({ type: User })
   async postUsers(@Body() body: CreateUserDto): Promise<User> {
-    return;
+    const newUser = await this.usersService.createUser(body);
+
+    return newUser;
   }
 
   @Get('/')
