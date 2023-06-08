@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { IAppConfig } from 'config/app.config';
 import { IMongoConfig } from 'config/mongo.config';
 import { BulkWriteResult } from 'mongodb';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { QueryUserDto } from './dto/query-user.dto';
 import { rawUserForBulk } from './interfaces/raw.user.interface';
 import { User } from './schema/user.schema';
@@ -34,6 +34,16 @@ export class UsersService {
       .limit(limit)
       .skip(offset)
       .sort({ [sortBy]: sort });
+  }
+
+  async softDeleteUser(id: Types.ObjectId): Promise<User> {
+    return this.userModel.findByIdAndUpdate(
+      id,
+      { isDeleted: true },
+      {
+        new: true,
+      },
+    );
   }
 
   async bulkUserInsertion(users: rawUserForBulk[]): Promise<BulkWriteResult> {
