@@ -46,9 +46,6 @@ export class User {
   @Prop({ type: String, required: true })
   firstName: string;
 
-  @ApiPropertyOptional({
-    example: false,
-  })
   @Prop({ type: Boolean, default: false, index: true })
   isDeleted: boolean;
 
