@@ -1,3 +1,11 @@
+## Instructions from Angel Briceño
+
+Please, in order for tests to work, first you need to run the integration test through cypress so the same code create the 4 users used by the e2e test.
+
+Any question please feel free to reach me out at abriceno@teravisiontech.com
+
+This is my first CRUD using Nestjs so be cool xD
+
 ## Intro
 
 This take-home project will test your back-end coding abilities. We will be evaulating how well directions can be followed including setting up the project, how quickly you can learn & adapt to a new framework, as well as document and follow best practices.
