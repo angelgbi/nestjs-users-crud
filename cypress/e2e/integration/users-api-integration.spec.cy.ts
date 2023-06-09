@@ -78,7 +78,7 @@ describe(`Users API Integration Tests`, () => {
     });
   });
 
-  it(`GET /users?lastName=Name&limit=20&page=1&sort=1&sortBy=lastName`, () => {
+  it(`GET /users?lastName=Name&limit=20&page=1&sort=1&sortBy=firstName`, () => {
     cy.request({
       url: `http://localhost:9000/users?lastName=${testUsers.getUserSecond.lastName}&limit=20&page=1&sort=1&sortBy=firstName`,
       method: 'GET',
